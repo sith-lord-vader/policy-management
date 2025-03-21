@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { DataSource } from "typeorm";
+import Approval from "../models/approval";
 import Employee from "../models/employee";
 import { Policy } from "../models/policy";
 import PolicyAck from "../models/policy-acknowledgement";
@@ -15,7 +16,7 @@ const sprintDataSource: DataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: true,
-  entities: [Policy, Employee, PolicyAck],
+  entities: [Policy, Employee, PolicyAck, Approval],
   subscribers: [],
   migrations: [],
   ssl: true,

@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from "express";
+import approvalRouter from "./approval";
 import employeeRouter from "./employee";
 import policyRouter from "./policy";
 import policyAckRouter from "./policy-acknowledgement";
@@ -19,5 +20,6 @@ apiRouter.get("/", (req: Request, res: Response) => {
 apiRouter.use("/employee", employeeRouter);
 apiRouter.use("/policy", policyRouter);
 apiRouter.use("/policy-ack", policyAckRouter);
+apiRouter.use("/approval", approvalRouter);
 
 export default apiRouter;

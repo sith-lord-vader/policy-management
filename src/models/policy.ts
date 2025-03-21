@@ -1,36 +1,58 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm"
-import sprintDataSource from "../db"
-import Employee from "./employee"
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import Approval from "./approval";
+import Employee from "./employee";
 
 @Entity()
 export class Policy {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    // @Column()
-    // isApproved: number
+  @OneToOne((type) => Approval, (approval) => approval.id, {
+    nullable: true,
+    onDelete: "SET NULL",
+  })
+  @JoinColumn({ name: "is_approved_id" })
+  isApproved: Approval;
 
-    @Column()
-    title: string
+  @Column()
+  title: string;
 
-    @Column("text")
-    content: string
+  @Column("text")
+  content: string;
 
-    @Column({nullable: true})
-    templateId: number
+  @Column({ nullable: true })
+  templateId: number;
 
-    @ManyToOne((type) => Employee, (employee) => employee.id)
-    @JoinColumn({name: "createdById"})
-    createdBy: Employee
+  @ManyToOne((type) => Employee, (employee) => employee.id)
+  createdBy: Employee;
 
-    @Column()
-    duration: number
+  @ManyToOne((type) => Policy, (policy) => policy.id, { nullable: true })
+  copyOf: Policy;
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-    public created_at: Date;
+  @Column()
+  duration: number;
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-    public updated_at: Date;
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  public created_at: Date;
+
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
+  public updated_at: Date;
 }
 
-export default Policy
+export default Policy;
